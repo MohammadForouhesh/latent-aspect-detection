@@ -1,0 +1,13 @@
+pandas==1.2.3
+numpy==1.19.5
+matplotlib==3.3.4
+nltk==3.5
+scikit-learn==0.24.1
+gensim==3.8.3
+scipy==1.6.2
+termcolor==1.1.0
+textblob==0.15.3
+pyldavis==2.1.2
+setuptools==52.0.0
+spacy==3.0.5
+flair==0.9
