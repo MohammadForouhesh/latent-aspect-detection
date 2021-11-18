@@ -23,7 +23,7 @@ from source.GoogleAspect import community_detection, google_aspect
 from source.LDAInference import scissors, lda_inference
 
 # =====================================================PANDAS=STYLE======================================================
-from source.Logging import print_process_logger
+from source.Logging import process_logger
 from source.Preprocessing import preprocess
 from source.Scoring import review_scoring
 from source.Segmentation import lda_kmeans_entropy_segmentation
@@ -230,8 +230,7 @@ def pxp_labeling(pxp_model, labeling_doc=google_aspect) -> list:
 
 
 # ======================================================================================================================
-def lda_occurrence(aspect_model, opinion_model, all_model, parent_document:pd.DataFrame) -> list:
-    time_stamp = datetime.datetime.now()
+def lda_occurrence(aspect_model, opinion_model,  parent_document:pd.DataFrame) -> list:
     num_topics_opinion = opinion_model.lda_model.num_topics
     num_topics_aspect = aspect_model.lda_model.num_topics
     
@@ -239,7 +238,6 @@ def lda_occurrence(aspect_model, opinion_model, all_model, parent_document:pd.Da
                                   for __ in range(0, num_topics_aspect)])
     
     for i in range(0, len(parent_document)):
-        print_process_logger(time_stamp, 'co-occurrence', ratio=i / len(parent_document))
         sentence = parent_document['caption'].iloc[i]
         preprocessed_sentence = parent_document['all_preprocessed'].iloc[i]
         aspect_dist = lda_distribution_normalizer(lda_inference(aspect_model, preprocessed_sentence), num_topics_aspect)
@@ -248,9 +246,7 @@ def lda_occurrence(aspect_model, opinion_model, all_model, parent_document:pd.Da
         # for sentence in segmented_doc.caption:
         if isinstance(sentence, float) or isinstance(sentence, int): print(sentence); continue
         sentence = sentence.replace('.', ' ')
-        segment_list = lda_kmeans_entropy_segmentation(sentence, model_1=all_model)
-        pol = review_scoring(segment_list)
-        # pol = TextBlob(sentence).sentiment.polarity
+        pol = TextBlob(sentence).sentiment.polarity
         occ_dist = aspect_dist.reshape(-1, 1)*opinion_dist
         sent_dist = pol*occ_dist
         obj_dist = np.array([[SentimentOccurrence(occ_dist[row][col], sent_dist[row][col]) for col in\

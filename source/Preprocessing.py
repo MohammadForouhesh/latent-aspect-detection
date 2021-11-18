@@ -22,8 +22,11 @@ import gc
 import os
 from datetime import datetime
 
+
 import nltk
 import spacy
+import torch
+
 import string
 import pandas as pd
 from numpy import percentile
@@ -34,9 +37,20 @@ from nltk import wordnet
 from nltk import PorterStemmer
 from nltk import WordNetLemmatizer
 
-from source.Logging import print_process_logger
+from thinc.api import set_gpu_allocator, require_gpu
+from source.Logging import process_logger
 
 gc.enable()
+
+torch.backends.cudnn.benchmark = True
+
+set_gpu_allocator("pytorch")
+require_gpu(0)
+torch.cuda.set_per_process_memory_fraction(1.0)
+
+use_cuda = torch.cuda.is_available()
+device = torch.device("cuda:1" if use_cuda else "cuda:0")
+
 
 global nlp, sw_spacy, en_words, handy
 
@@ -317,6 +331,6 @@ def specific_stop_words(dataframe:pd.DataFrame, column:str) -> set:
 def preprocess_in_place(data_frame: pd.DataFrame, column_name: str, postags: list):
     time_stamp = datetime.now()
     for postag in postags:
-        print_process_logger(time_stamp, '', postags.index(postag)/len(postags))
+        process_logger(time_stamp, '', postags.index(postag)/len(postags))
         data_frame['{}_preprocessed'.format(postag)] = data_frame[column_name].apply(preprocess, tagger=None, postag=postag)
     return data_frame

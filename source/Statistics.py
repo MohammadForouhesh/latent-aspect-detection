@@ -7,7 +7,7 @@ from nltk.corpus import wordnet_ic
 from source import LDATopicModeling
 from source.SamEval import read_sam_eval
 from source.LDAInference import topic_detection, lda_mount, word_topic_detection, lda_inference
-from source.Logging import print_process_logger
+from source.Logging import process_logger
 from source.Preprocessing import preprocess
 
 
@@ -15,7 +15,7 @@ def sam_eval_aspect_distribution(model: LDATopicModeling.TopicModeling, sam_eval
     prep = sam_eval_doc['caption'].apply(preprocess, postag=None, tagger=None)
     topic_detection_series = prep.apply(topic_detection, model=model).apply(lambda item: item[0])
     for ind, aspects in enumerate(prep):
-        print_process_logger(datetime.now(), 'sam_evaling', ind/len(prep))
+        process_logger(datetime.now(), 'sam_evaling', ind/len(prep))
         eval_index = []
         for aspect in aspects:
             word_topic = word_topic_detection(word=aspect, model=model, corpus_ic=corpus_ic)

@@ -5,7 +5,7 @@ import numpy as np
 import pytrec_eval
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
-from source.Logging import print_process_logger
+from source.Logging import process_logger
 from source.Preprocessing import preprocess
 
 
@@ -51,7 +51,7 @@ def evaluation_experimentation(baseline_dataset, evaluation_functional, **kwargs
     grid_size = [round(0.05 * x, 2) for x in range(0, 20)]
     for ind in range(0, len(grid_size)):
         acc_fold = []
-        print_process_logger(time_stamp, 'evaluation', ratio=ind/len(grid_size))
+        process_logger(time_stamp, 'evaluation', ratio=ind/len(grid_size))
         for _, train_ind in kf.split(baseline_dataset):
             X_cv = baseline_dataset.iloc[train_ind]
             evaluation_set = evaluation_setup(dataset=X_cv, percentage=grid_size[ind])
@@ -66,7 +66,7 @@ def report_evaluation(ir_metrics_array):
         mean = [ir_metrics_array[i][metric].mean() for i in range(0, len(ir_metrics_array))]
         # std = [ir_metrics_array[i][metric].std() for i in range(0, len(ir_metrics_array))]
         # yield ['{:.2f}% ± {:.2f}'.format(mean[ind]*100, std[ind]*100) for ind in range(0, len(mean))]
-        yield ['{:.2f}'.format(mean[ind] * 100) for ind in range(0, len(mean))]
+        yield [round(mean[ind] * 100, 2) for ind in range(0, len(mean))]
 
 
 def report_pure(sam_eval_test_doc, evaluation_functional, **kwargs):

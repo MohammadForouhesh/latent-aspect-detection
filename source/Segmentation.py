@@ -1,6 +1,6 @@
 from source.LDAInference import lda_mount, lda_inference
 from source.Preprocessing import preprocess, spacy_lemmatize
-from source.Logging import print_process_logger
+from source.Logging import process_logger
 from datetime import datetime
 from collections.abc import Generator
 from source import LDATopicModeling
@@ -119,7 +119,7 @@ def review_segmentation(review: str, **kwargs):
 def pivot_segmentation(pivot_series: pd.Series, base_dataframe: pd.DataFrame, columns: list, **kwargs):
     time_stamp = datetime.now()
     for index in range(0, base_dataframe.shape[0]):
-        print_process_logger(time_stamp, 'segmentation', index/base_dataframe.shape[0])
+        process_logger(time_stamp, 'segmentation', index/base_dataframe.shape[0])
         prep_align = alignment(pivot_series.iloc[index], base_dataframe['all_preprocessed'].iloc[index])
         document = lda_entropy_segmentation(pivot_series.iloc[index], prep_align, **kwargs)
         yield pivot_augmentation(doc=document, frame=base_dataframe, col=columns, ind=index)

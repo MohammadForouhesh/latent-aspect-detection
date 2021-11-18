@@ -127,14 +127,13 @@ class TopicModeling():
                 X_cv = X[train_ind]
                 corpus, dictionary, word_list = self.__get_corpus(document=X_cv)
 
-                model = gensim.models.wrappers.LdaMallet(mallet_path, corpus=corpus, num_topics=num_topics,
-                                                         id2word=dictionary)
+                model = gensim.models.LdaModel(corpus=corpus, num_topics=num_topics, id2word=dictionary)
                 num_coherence.append(self.__coherence(model=model, texts=word_list, dictionary=dictionary))
                 
                 del model
-                gc.collect()
                 
             coherence_values.append(num_coherence)
+            gc.collect()
         return coherence_values
 
     def topic_modeling(self, **kwargs):
@@ -194,7 +193,7 @@ class TopicModeling():
         #coherence_value = self.__coherence()
         #print(colored('Coherence value is:\t' + str(coherence_value), 'cyan'))
 
-        self.__visualization(num_topics)
+        # self.__visualization(num_topics)
         return model_array, model_topic
 
  

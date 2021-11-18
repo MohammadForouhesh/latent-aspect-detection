@@ -55,9 +55,9 @@ def builder(args, train_series: pd.Series, postag: str) -> LDATopicModeling.Topi
     model_name = postag + '_' + args.path[args.path.find('/') + 1:args.path.find('.xlsx')]
     # ==================================================================================================================
     if args.tune:
-        coherence_values = pxp_model.cross_validation(start=5, limit=100, step=3)
+        coherence_values = pxp_model.cross_validation(start=5, limit=60, step=5)
         print(coherence_values)
-        optimal_topic = elbow_method(coherence_values, name=model_name, start=5, limit=100, step=3)
+        optimal_topic = elbow_method(coherence_values, name=model_name, start=5, limit=60, step=5)
         print(colored("Our novel tuning system detected #" + str(optimal_topic) + " with coherence " + \
                       " as the optimal value for topic number", 'cyan'))
 
@@ -144,18 +144,6 @@ def main(args):
         lda_storage[postag] = model
 
     # ==================================================================================================================
-    print(logger(datetime.now(), 'create analytics table', ''))
-    from source.AspectOpinionOccurrence import occurrence_builder, topic_relevance
-    if args.labeling is not None:   labeling_doc = pd.read_excel(args.labeling, header=None).transpose().to_numpy(na_value="")
-    else:                           labeling_doc = None
-    occurrence_builder(lda_storage['aspect'], lda_storage['opinion'], lda_storage['all'], parent_document=dataset,
-                       save_path='pipeline/' + args.path[:args.path.find('.xlsx')].replace('/', '_') + '_report_community.xlsx',
-                       labeling_doc=labeling_doc)
-
-    topic_relevance(lda_storage['aspect'], lda_storage['opinion'], parent_document=dataset,
-                    save_path='pipeline/' + args.path[:args.path.find('.xlsx')].replace('/', '_') + '_report_community_details.xlsx')
-
-    # ==================================================================================================================
     print(logger(datetime.now(), 'evaluate latent aspect', 'testing sam_eval{} restaurant dataset'.format(args.sam_eval_test)))
 
     pd.DataFrame(report_pure(sam_eval_test_dataset, evaluation_functional=hidden_aspect_evaluation,
@@ -234,7 +222,7 @@ if __name__ == '__main__':
     os.makedirs("inference", exist_ok=True)
     os.makedirs("prep_and_seg_datasets", exist_ok=True)
     # ==================================================================================================================
-    parser = argparse.ArgumentParser(description='PXP Topic Modeling.')
+    parser = argparse.ArgumentParser(description='Latent Aspect Detection.')
     parser.add_argument('--path', dest='path', type=str, default='data/Canadian_Casinos.xlsx',
                         help='Raw dataset file address.')
     parser.add_argument('--segment', dest='segment', type=bool, default=True, help='break every record into sentences.')
@@ -270,13 +258,8 @@ if __name__ == '__main__':
     parser.add_argument('--sam_eval_test', dest='sam_eval_test', type=str, default='2014',
                         help="choose between 2014, 2015, 2016. to be tested by our model")
 
-    parser.set_defaults(augment=None, segment=True, tune=False, preprocess=False, flair=False, correction=False,
-                        path='data/Canadian_Casinos_preprocessed_corrected.xlsx',
-                        #postag_list=["aspect", "opinion", 'all'], #iterations=400, alpha=0.1,
-                        #labeling='labels/arash_labels.xlsx',
-                        aspect_model='models/pxp_model_flair_aspect_Canadian_Casinos_preprocessed_corrected.pxp',
-                        opinion_model='models/pxp_model_flair_opinion_Canadian_Casinos_preprocessed_corrected.pxp',
-                        all_model='models/pxp_model_flair_all_Canadian_Casinos_preprocessed_corrected.pxp')
+    parser.set_defaults(augment=None, segment=True, tune=True, preprocess=True, flair=False, correction=True,
+                        path='data/yelp.xlsx')
 
     arguments = parser.parse_args()
     with warnings.catch_warnings():
