@@ -45,13 +45,12 @@ def evaluation_setup(dataset: pd.DataFrame, percentage: float = 0.1, random_stat
 
 
 def evaluation_experimentation(baseline_dataset, evaluation_functional, **kwargs):
-    time_stamp = datetime.datetime.now()
     kf = KFold(5, shuffle=True, random_state=42)
     acc = []
     grid_size = [round(0.05 * x, 2) for x in range(0, 20)]
     for ind in range(0, len(grid_size)):
         acc_fold = []
-        process_logger(time_stamp, 'evaluation', ratio=ind/len(grid_size))
+        process_logger('evaluation', ratio=ind/len(grid_size))
         for _, train_ind in kf.split(baseline_dataset):
             X_cv = baseline_dataset.iloc[train_ind]
             evaluation_set = evaluation_setup(dataset=X_cv, percentage=grid_size[ind])
