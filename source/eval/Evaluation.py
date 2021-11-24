@@ -1,5 +1,3 @@
-import datetime
-
 import pandas as pd
 import numpy as np
 import pytrec_eval
@@ -63,9 +61,9 @@ def evaluation_experimentation(baseline_dataset, evaluation_functional, **kwargs
 def report_evaluation(ir_metrics_array):
     for ind, metric in enumerate(['ndcg', 'recall_3', 'map', 'success_1', 'success_3', 'success_5', 'success_10', 'success_32']):
         mean = [ir_metrics_array[i][metric].mean() for i in range(0, len(ir_metrics_array))]
-        # std = [ir_metrics_array[i][metric].std() for i in range(0, len(ir_metrics_array))]
-        # yield ['{:.2f}% ± {:.2f}'.format(mean[ind]*100, std[ind]*100) for ind in range(0, len(mean))]
-        yield [round(mean[ind] * 100, 2) for ind in range(0, len(mean))]
+        std = [ir_metrics_array[i][metric].std() for i in range(0, len(ir_metrics_array))]
+        yield ['{:.2f}% ± {:.2f}'.format(mean[ind]*100, std[ind]*100) for ind in range(0, len(mean))]
+        # yield [round(mean[ind] * 100, 2) for ind in range(0, len(mean))]
 
 
 def report_pure(sam_eval_test_doc, evaluation_functional, **kwargs):

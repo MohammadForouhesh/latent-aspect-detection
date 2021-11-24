@@ -10,7 +10,7 @@ class AspectKMeans:
     def __init__(self, num_clusters: int):
         self.vectorizer = TfidfVectorizer()
         self.num_clusters = num_clusters
-        self.km = KMeans(n_clusters=self.num_clusters, init='k-means++', max_iter=100, n_init=1)
+        self.km = KMeans(n_clusters=self.num_clusters, init='k-means++')
 
     def __prep(self, text: str):
         item = text.replace("!", ". ").replace(".", ". ").replace("?", ". ")
