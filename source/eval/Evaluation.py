@@ -24,7 +24,7 @@ def pytrec_evaluation(sam_eval_index_aspect:pd.Series, detected_aspect:pd.Series
         pytrec_qrun['query'+str(ind)] = {'topic'+str(detected_aspect.iloc[ind][i]):success_at-i
                                          for i in range(0, len(detected_aspect.iloc[ind]))}
 
-    evaluator = pytrec_eval.RelevanceEvaluator(pytrec_qrel, {'ndcg', 'recall_3', 'map', 'success_1', 'success_3', 'success_5',
+    evaluator = pytrec_eval.RelevanceEvaluator(pytrec_qrel, {'ndcg', 'recall_5', 'recip_rank', 'success_1', 'success_3', 'success_5',
                                                              'success_10', 'success_32'})
 
     return pd.DataFrame(evaluator.evaluate(pytrec_qrun)).mean(axis=1)
@@ -59,7 +59,7 @@ def evaluation_experimentation(baseline_dataset, evaluation_functional, **kwargs
 
 
 def report_evaluation(ir_metrics_array):
-    for ind, metric in enumerate(['ndcg', 'recall_3', 'map', 'success_1', 'success_3', 'success_5', 'success_10', 'success_32']):
+    for ind, metric in enumerate(['ndcg', 'recall_5', 'recip_rank', 'success_1', 'success_3', 'success_5', 'success_10', 'success_32']):
         mean = [ir_metrics_array[i][metric].mean() for i in range(0, len(ir_metrics_array))]
         std = [ir_metrics_array[i][metric].std() for i in range(0, len(ir_metrics_array))]
         yield ['{:.2f}% ± {:.2f}'.format(mean[ind]*100, std[ind]*100) for ind in range(0, len(mean))]
