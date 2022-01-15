@@ -15,13 +15,13 @@ The package is standalone, scalable, and can be freely extended to your needs.
 You can find the pre-processed datasets and the pre-trained models in the ```\data``` folder.
 Run the following command:
 ```bash
-$ python Main.py --path data\Canadian_Casinos_preprocessed_corrected.xlsx --preprocess False
+$ python Main.py --path data\Canadian_Restaurant_preprocessed_corrected.xlsx --preprocess False
 ```
 
-You can also use the original datasets of Casino domain. 
+You can also use the original datasets of Restaurant domain. 
 For preprocessing, run:
 ```bash
-$ python Main.py --path data\data\Canadian_Casinos.xlsx
+$ python Main.py --path data\data\Canadian_Restaurant.xlsx
 ```
 The preprocessed files and lda model for each domain will
 be saved in folders prep_and_seg/~ and models/~ respectively.
