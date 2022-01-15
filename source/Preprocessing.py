@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
 """
-Created on Sat Feb 27 15:56:41 2021
-
-@author: Mohammad.FT
-
 Create an empty dataset D_prep, with columns caption, aspect_preprocessed, and opinion_preprocessed.
 
 Given dataset D, for every review r in D, save review r in the corresponding row in dataset D_prep under the column

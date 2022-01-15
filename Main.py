@@ -1,12 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# ! Users\Mohammad.FT\PycharmProjects\PxP-TopicModeling python -W ignore::DeprecationWarning
-
-"""
-Created on Thur Mar 11 21:11:32 2021
-
-@author: Mohammad.FT
-"""
 import gc
 import os
 import nltk
@@ -173,13 +164,6 @@ def main(args):
     pd.DataFrame(report_pure(sam_eval_test_dataset, evaluation_functional=random_evaluation_functional),
                  index=['ndcg', 'recall_5', 'recip_rank', 'success_1', 'success_3', 'success_5', 'success_10', 'success_32'])\
         .to_excel('reports/report_random_mrr_{}.xlsx'.format(args.sam_eval_test))
-
-    print(logger(datetime.now(), 'train/eval baseline KMeans', 'testing sam_eval{} restaurant dataset'.format(args.sam_eval_test)))
-    kmeans_model = AspectKMeans(32)
-    kmeans_model.train(dataset['caption'])
-    pd.DataFrame(report_pure(sam_eval_test_dataset, evaluation_functional=akmeans_evaluation_functional, model=kmeans_model),
-                 index=['ndcg', 'recall_5', 'recip_rank', 'success_1', 'success_3', 'success_5', 'success_10', 'success_32']) \
-        .to_excel('reports/report_kmeans_mrr_{}.xlsx'.format(args.sam_eval_test))
 
     print(logger(datetime.now(), 'train/eval baseline LocLDA', 'testing sam_eval{} restaurant dataset'.format(args.sam_eval_test)))
     locLDA = TopicModeling(dataset.all_preprocessed, bigram=False)

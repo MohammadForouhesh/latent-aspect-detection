@@ -1,13 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# ! python -W ignore::DeprecationWarning
-
-"""
-Created on Tue Apr 18 15:00:00 2021
-
-@author: Mohammad.FT
-"""
-
 import pickle
 import datetime
 

@@ -1,13 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# ! Users\Mohammad.FT\PycharmProjects\PxP-TopicModeling python -W ignore::DeprecationWarning
-
-"""
-Created on Sat Feb 27 15:56:46 2021
-
-@author: Mohammad.FT
-"""
-
 import warnings
 
 from gensim import models
@@ -190,8 +180,8 @@ class TopicModeling():
         np.savetxt("results/" + library + "_" + str(num_topics) + "topics.csv", model_array, delimiter=",", fmt='%s',
                    encoding="utf-8")
 
-        #coherence_value = self.__coherence()
-        #print(colored('Coherence value is:\t' + str(coherence_value), 'cyan'))
+        coherence_value = self.__coherence()
+        print(colored('Coherence value is:\t' + str(coherence_value), 'cyan'))
 
         # self.__visualization(num_topics)
         return model_array, model_topic
