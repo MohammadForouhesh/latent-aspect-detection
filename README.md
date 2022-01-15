@@ -12,29 +12,28 @@ The package is standalone, scalable, and can be freely extended to your needs.
 
 
 ### Data
-You can find the pre-processed datasets and the pre-trained models in
-[[Download]]().
-The zip file should be decompressed in the main folder and run:
+You can find the pre-processed datasets and the pre-trained models in the ```\data``` folder.
+Run the following command:
 ```bash
-$ python Main.py --prep_noun noun.xlsx --prep_adj adj.xlsx \
+$ python Main.py --path data\Canadian_Casinos_preprocessed_corrected.xlsx --preprocess False
 ```
 
-You can also download the original datasets of Casino domain in 
-[[Download]](). 
-For preprocessing, put the decompressed zip file in the main folder and run 
+You can also use the original datasets of Casino domain. 
+For preprocessing, run:
 ```bash
-$ python Main.py --path dataset.xlsx
+$ python Main.py --path data\data\Canadian_Casinos.xlsx
 ```
 The preprocessed files and lda model for each domain will
-be saved in folders results/~ and models/~ respectively.
+be saved in folders prep_and_seg/~ and models/~ respectively.
 
 <br>
 
 ### Using Pre-Trained Models
 Models can be built and reused, to do that, run:
 ```bash
-$ python Main.py --tune False --noun_model pxp_model_noun.pxp \
-                 --adj_model pxp_model_adj.pxp
+$ python Main.py --tune False --aspect_model pxp_model_aspect.pxp \
+                 --opinion_model pxp_model_opinion.pxp \
+                 --all_nodeol pxp_model_all.pxp
 ```
 <br>
 
@@ -51,30 +50,14 @@ process of choosing optimal number of topics, here are results for noun dataset 
 <br>
 
 ##### For NOUN dataset: 
-![results4](picture/coherence-topics-noun.png)
+![results4](pictures/coherence-topics-aspects.png)
 optimal number: 36 
 
 <br>
 
 ##### For ADJ/ADV dataset:
-![resutls5](picture/coherence-topics-adj.png)
+![resutls5](pictures/coherence-topics-opinion.png)
 optimal number: 39
-<br>
-
-### Result
-Here are some visualization on our dataset of scraped 
-google reviews for all Canadian casinos.
-
-![results0](visual/cloud_casino1_no_collocations.png)
-
-and final Aspect-Opinion Sentiment Co-occurrence heat map report:
- 
-![results1](picture/result_occurrence.png)
-
-Note that each gray cell represent an irrelevant pair, these irrelevancies
-are calculated using glove-twitter-50 word embedding.
-Sentiment of each cell is calculated using TextBlob sentiment tool, green
-spectrum stands for positive, and red spectrum for negative sentiments
 <br>
 
 ### Inference
@@ -85,11 +68,6 @@ $ python Main.py --inference inference_set.xlsx
 note that models need to be indicated first, otherwise 
 a model will be build from default settings.
 
-Here, Aspect-Opinion Sentiment Co-occurrence heat map report
-for Woodbine resort, inferred from the all Canadian casinos model:
-
-![results2](picture/inference_woodbine_occurrence1.png)
-Woodbine dataset contains ~2400 reviews.
 <br>
 
 ### Dependencies
@@ -127,11 +105,3 @@ $ pip install -r requirements.txt
 * Pipline actual duration is ~11 hours on a dataset of size ~6800 
 
 <br>
-
-##### Bottle necks: 
-* Preprocess 77% (angelicized method used 60% of total resources), 
-* Topic Modeling 20% (cross validation method used 18% of total resources)
-
-### References
-
-Developed by [Press'nXPress](https://pressnxpress.com/)
