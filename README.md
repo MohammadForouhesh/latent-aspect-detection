@@ -49,13 +49,13 @@ process of choosing optimal number of topics, here are results for noun dataset 
 
 <br>
 
-##### For NOUN dataset: 
-![results4](pictures/coherence-topics-aspects.png)
+##### For ASPECTs: 
+![results4](pictures/coherence-topics-aspect.png)
 optimal number: 36 
 
 <br>
 
-##### For ADJ/ADV dataset:
+##### For OPINIONs:
 ![resutls5](pictures/coherence-topics-opinion.png)
 optimal number: 39
 <br>
