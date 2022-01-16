@@ -18,7 +18,7 @@ def pxp_eval_indexer(aspects, corpus_ic, model):
 def hidden_aspect_evaluation(model: LDATopicModeling.TopicModeling, evaluation_set: pd.DataFrame, corpus_ic: dict) -> pd.DataFrame:
 
     evaluation_set['detected_aspect'] = evaluation_set['None_preprocessed'].apply(topic_detection, model=model)
-    return pytrec_evaluation(evaluation_set['sam_eval_aspect'].apply(pxp_eval_indexer, corpus_ic=corpus_ic, model=model),
+    return pytrec_evaluation(evaluation_set['sem_eval_aspect'].apply(pxp_eval_indexer, corpus_ic=corpus_ic, model=model),
                              evaluation_set['detected_aspect'], success_at=model.lda_model.num_topics)\
             .to_frame()\
             .transpose()

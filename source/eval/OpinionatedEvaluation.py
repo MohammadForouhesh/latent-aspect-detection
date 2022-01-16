@@ -45,20 +45,20 @@ def opinionated_aspect_extraction(evaluation_set: pd.DataFrame, opinionated_laye
     
     evaluation_set['detected_aspect'] = evaluation_set['None_preprocessed'].apply(opinionated_layer_functional, **kwargs)
     
-    return pytrec_evaluation(evaluation_set['sam_eval_aspect'].apply(pxp_eval_indexer, corpus_ic=kwargs['corpus_ic'],
+    return pytrec_evaluation(evaluation_set['sem_eval_aspect'].apply(pxp_eval_indexer, corpus_ic=kwargs['corpus_ic'],
                                                                      model=kwargs['aspect_model']),
                              evaluation_set['detected_aspect'], success_at=kwargs['aspect_model'].lda_model.num_topics)\
             .to_frame()\
             .transpose()
 
 
-def report_opinionated(sam_eval_test_doc, aspect_model: LDATopicModeling.TopicModeling, opinion_model: LDATopicModeling.TopicModeling,
+def report_opinionated(sem_eval_test_doc, aspect_model: LDATopicModeling.TopicModeling, opinion_model: LDATopicModeling.TopicModeling,
                        opinionated_layer_functional, corpus_ic: dict, train_set: pd.DataFrame, theta: float = 0.005):
 
     joint_probability = lda_occurrence(aspect_model, opinion_model, parent_document=train_set)
     oa_pool = pooling(joint_probability, pool_size=1)
     joint_probability_normal = scaler.fit_transform(convert_matrix(joint_probability))
-    x, acc = evaluation_experimentation(sam_eval_test_doc, evaluation_functional=opinionated_aspect_extraction,
+    x, acc = evaluation_experimentation(sem_eval_test_doc, evaluation_functional=opinionated_aspect_extraction,
                                         opinionated_layer_functional=opinionated_layer_functional,
                                         aspect_model=aspect_model,
                                         opinion_model=opinion_model,

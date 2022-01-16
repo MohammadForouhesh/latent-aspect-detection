@@ -14,11 +14,11 @@ def aspect_remover(series: pd.Series):
     return preprocess(" ".join(trimmed), tagger=None, postag=None)
 
 
-def pytrec_evaluation(sam_eval_index_aspect:pd.Series, detected_aspect:pd.Series, success_at) -> pd.Series:
+def pytrec_evaluation(sem_eval_index_aspect:pd.Series, detected_aspect:pd.Series, success_at) -> pd.Series:
 
     pytrec_qrel = {}
     pytrec_qrun = {}
-    for ind, eval_index in enumerate(sam_eval_index_aspect):
+    for ind, eval_index in enumerate(sem_eval_index_aspect):
 
         pytrec_qrel['query'+str(ind)] = {'topic'+str(eval_j):success_at-j for j, eval_j in enumerate(eval_index)}
         pytrec_qrun['query'+str(ind)] = {'topic'+str(detected_aspect.iloc[ind][i]):success_at-i
@@ -66,6 +66,6 @@ def report_evaluation(ir_metrics_array):
         # yield [round(mean[ind] * 100, 2) for ind in range(0, len(mean))]
 
 
-def report_pure(sam_eval_test_doc, evaluation_functional, **kwargs):
-    x, acc = evaluation_experimentation(sam_eval_test_doc, evaluation_functional, **kwargs)
+def report_pure(sem_eval_test_doc, evaluation_functional, **kwargs):
+    x, acc = evaluation_experimentation(sem_eval_test_doc, evaluation_functional, **kwargs)
     return report_evaluation(ir_metrics_array=acc)

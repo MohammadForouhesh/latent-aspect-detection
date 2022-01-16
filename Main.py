@@ -5,7 +5,7 @@ from nltk.corpus import wordnet_ic
 from baselines.KMeans import AspectKMeans, akmeans_evaluation_functional
 from baselines.LocLDA import loc_lda_evaluation_functional
 from baselines.Random import random_evaluation_functional
-from source.SamEval import read_sam_eval
+from source.SemEval import read_sem_eval
 from source.eval.Evaluation import report_pure
 from source.eval.LatentAspectEvaluation import hidden_aspect_evaluation
 from source.eval.OpinionatedEvaluation import report_opinionated, opinionated_pooling_layer, \
@@ -63,26 +63,26 @@ def builder(args, train_series: pd.Series, postag: str) -> LDATopicModeling.Topi
     return pxp_model
 
 
-def prep_sam_eval() -> dict:
-    sam_eval_paths = {'201{}'.format(i): 'sam_eval/sam_eval201{}.txt'.format(i) for i in [4, 5, 6]}
-    sam_eval_frame = {key: preprocess_in_place(read_sam_eval(sam_eval_paths[key]),
+def prep_sem_eval() -> dict:
+    sem_eval_paths = {'201{}'.format(i): 'sem_eval/sem_eval201{}.txt'.format(i) for i in [4, 5, 6]}
+    sem_eval_frame = {key: preprocess_in_place(read_sem_eval(sem_eval_paths[key]),
                                                                column_name='caption',
                                                                postags=['aspect', 'opinion', 'all', None])
-                      for key in sam_eval_paths}
-    with open('sam_eval/preprocessed_data_frame.dict', 'wb') as handle:
-        pickle.dump(sam_eval_frame, handle, protocol=pickle.HIGHEST_PROTOCOL)
+                      for key in sem_eval_paths}
+    with open('sem_eval/preprocessed_data_frame.dict', 'wb') as handle:
+        pickle.dump(sem_eval_frame, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    return sam_eval_frame
+    return sem_eval_frame
 
 
 def main(args):
     start_time = datetime.now()
-    print(logger(datetime.now(), 'start preprocessing', 'sam_eval dataset ready soon'))
+    print(logger(datetime.now(), 'start preprocessing', 'sem_eval dataset ready soon'))
 
-    if os.path.isfile('sam_eval/preprocessed_data_frame.dict'):
-        with open('sam_eval/preprocessed_data_frame.dict', 'rb') as handle:
-            sam_eval_dict = pickle.load(handle)
-    else:   sam_eval_dict = prep_sam_eval()
+    if os.path.isfile('sem_eval/preprocessed_data_frame.dict'):
+        with open('sem_eval/preprocessed_data_frame.dict', 'rb') as handle:
+            sem_eval_dict = pickle.load(handle)
+    else:   sem_eval_dict = prep_sem_eval()
 
     print(logger(datetime.now(), 'end preprocessing', ''))
     dataset = pd.read_excel(args.path, index_col=0)
@@ -116,8 +116,8 @@ def main(args):
     if args.correction:
         dataset['opinion_preprocessed'] = correction(dataset, pretrained='labels/yelp_all_pretrained_dataset.xlsx')
         dataset.to_excel(prep_n_seg_path + '/preprocessed_corrected.xlsx')
-    sam_eval_test_dataset = sam_eval_dict.pop(args.sam_eval_test)
-    dataset = pd.concat([dataset] + [sam_df for sam_df in sam_eval_dict.values()]).fillna("sam_eval")
+    sem_eval_test_dataset = sem_eval_dict.pop(args.sem_eval_test)
+    dataset = pd.concat([dataset] + [sam_df for sam_df in sem_eval_dict.values()]).fillna("sem_eval")
 
     # ==================================================================================================================
     lda_storage = {}
@@ -135,45 +135,45 @@ def main(args):
         lda_storage[postag] = model
 
     # ==================================================================================================================
-    print(logger(datetime.now(), 'evaluate latent aspect', 'testing sam_eval{} restaurant dataset'.format(args.sam_eval_test)))
+    print(logger(datetime.now(), 'evaluate latent aspect', 'testing sem_eval{} restaurant dataset'.format(args.sem_eval_test)))
 
-    pd.DataFrame(report_pure(sam_eval_test_dataset, evaluation_functional=hidden_aspect_evaluation,
+    pd.DataFrame(report_pure(sem_eval_test_dataset, evaluation_functional=hidden_aspect_evaluation,
                              model=lda_storage['aspect'], corpus_ic=wordnet_ic.ic('ic-brown.dat')),
                  index=['ndcg', 'recall_5', 'recip_rank', 'success_1', 'success_3', 'success_5', 'success_10', 'success_32'])\
-                .to_excel('reports/report_pure_mrr_{}.xlsx'.format(args.sam_eval_test))
+                .to_excel('reports/report_pure_mrr_{}.xlsx'.format(args.sem_eval_test))
 
-    print(logger(datetime.now(), 'evaluate opinionated aspect', 'testing sam_eval{} restaurant dataset'.format(args.sam_eval_test)))
-    pd.DataFrame(report_opinionated(sam_eval_test_dataset, aspect_model=lda_storage['aspect'],
+    print(logger(datetime.now(), 'evaluate opinionated aspect', 'testing sem_eval{} restaurant dataset'.format(args.sem_eval_test)))
+    pd.DataFrame(report_opinionated(sem_eval_test_dataset, aspect_model=lda_storage['aspect'],
                                     opinion_model=lda_storage['opinion'],
                                     opinionated_layer_functional=opinionated_pooling_layer,
                                     corpus_ic=wordnet_ic.ic('ic-brown.dat'),
                                     train_set=dataset),
                  index=['ndcg', 'recall_5', 'recip_rank', 'success_1', 'success_3', 'success_5', 'success_10', 'success_32'])\
-                .to_excel('reports/report_opinionated_pool_mrr_{}.xlsx'.format(args.sam_eval_test))
+                .to_excel('reports/report_opinionated_pool_mrr_{}.xlsx'.format(args.sem_eval_test))
 
-    # print(logger(datetime.now(), 'evaluate opinionated aspect', 'testing sam_eval{} restaurant dataset'.format(args.sam_eval_test)))
-    # pd.DataFrame(report_opinionated(sam_eval_test_dataset, aspect_model=lda_storage['aspect'],
+    # print(logger(datetime.now(), 'evaluate opinionated aspect', 'testing sem_eval{} restaurant dataset'.format(args.sem_eval_test)))
+    # pd.DataFrame(report_opinionated(sem_eval_test_dataset, aspect_model=lda_storage['aspect'],
     #                                 opinion_model=lda_storage['opinion'],
     #                                 opinionated_layer_functional=opinionated_aspect_detection,
     #                                 corpus_ic=wordnet_ic.ic('ic-brown.dat'),
     #                                 train_set=dataset, theta=0.1),
     #              index=['ndcg', 'recall_5', 'recip_rank', 'success_1', 'success_3', 'success_5', 'success_10', 'success_32'])\
-    #              .to_excel('reports/report_opinionated_matrix_theta1_{}.xlsx'.format(args.sam_eval_test))
+    #              .to_excel('reports/report_opinionated_matrix_theta1_{}.xlsx'.format(args.sem_eval_test))
 
-    print(logger(datetime.now(), 'evaluate baseline Random', 'testing sam_eval{} restaurant dataset'.format(args.sam_eval_test)))
-    pd.DataFrame(report_pure(sam_eval_test_dataset, evaluation_functional=random_evaluation_functional),
+    print(logger(datetime.now(), 'evaluate baseline Random', 'testing sem_eval{} restaurant dataset'.format(args.sem_eval_test)))
+    pd.DataFrame(report_pure(sem_eval_test_dataset, evaluation_functional=random_evaluation_functional),
                  index=['ndcg', 'recall_5', 'recip_rank', 'success_1', 'success_3', 'success_5', 'success_10', 'success_32'])\
-        .to_excel('reports/report_random_mrr_{}.xlsx'.format(args.sam_eval_test))
+        .to_excel('reports/report_random_mrr_{}.xlsx'.format(args.sem_eval_test))
 
-    print(logger(datetime.now(), 'train/eval baseline LocLDA', 'testing sam_eval{} restaurant dataset'.format(args.sam_eval_test)))
+    print(logger(datetime.now(), 'train/eval baseline LocLDA', 'testing sem_eval{} restaurant dataset'.format(args.sem_eval_test)))
     locLDA = TopicModeling(dataset.all_preprocessed, bigram=False)
     locLDA.topic_modeling(num_topics=32, library='mallet', iterations=args.iterations)
     locLDA.lda_model = gensim.models.wrappers.ldamallet.malletmodel2ldamodel(locLDA.lda_model,
                                                                              gamma_threshold=0.001,
                                                                              iterations=50)
-    pd.DataFrame(report_pure(sam_eval_test_dataset, evaluation_functional=loc_lda_evaluation_functional, model=locLDA),
+    pd.DataFrame(report_pure(sem_eval_test_dataset, evaluation_functional=loc_lda_evaluation_functional, model=locLDA),
                  index=['ndcg', 'recall_5', 'recip_rank', 'success_1', 'success_3', 'success_5', 'success_10', 'success_32']) \
-        .to_excel('reports/report_locLDA_mrr_{}.xlsx'.format(args.sam_eval_test))
+        .to_excel('reports/report_locLDA_mrr_{}.xlsx'.format(args.sem_eval_test))
 
     print(colored(datetime.now() - start_time, 'cyan'))
 
@@ -221,7 +221,7 @@ if __name__ == '__main__':
     parser.add_argument('--alpha', dest='alpha', type=float, default=0.1, help="mallet parameters")
     parser.add_argument('--labeling', dest='labeling', type=str, default=None,
                         help="Customizable labeling of the aspect opinion table, provide tha path to your labeling doc")
-    parser.add_argument('--sam_eval_test', dest='sam_eval_test', type=str, default='2016',
+    parser.add_argument('--sem_eval_test', dest='sem_eval_test', type=str, default='2016',
                         help="choose between 2014, 2015, 2016. to be tested by our model")
 
     parser.set_defaults(augment=None, segment=False, tune=False, preprocess=False, flair=False, correction=False,
@@ -233,7 +233,7 @@ if __name__ == '__main__':
     arguments = parser.parse_args()
     with warnings.catch_warnings():
         logging.basicConfig(filename='logging/' + arguments.path[:arguments.path.find('.xlsx')].replace('/', '_') + \
-                                      str(arguments.sam_eval_test) + '_pxp_info.log', format='%(asctime)s : %(levelname)s : %(message)s',
+                                      str(arguments.sem_eval_test) + '_pxp_info.log', format='%(asctime)s : %(levelname)s : %(message)s',
                             level=logging.INFO)
         warnings.filterwarnings("ignore")
         print(logger(datetime.now(), "", 'PXP=TopicModeling'))

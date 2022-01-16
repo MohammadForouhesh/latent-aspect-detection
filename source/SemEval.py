@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 
-class SamEvalStruct(list):
+class SemEvalStruct(list):
     class Node(str):
         def __init__(node, aspect: str):
             node.aspect = aspect
@@ -32,16 +32,16 @@ class SamEvalStruct(list):
         # self.index_set = [item for element in self.index_set for item in element]
 
 
-def read_sam_eval(load_path: str) -> pd.DataFrame:
+def read_sem_eval(load_path: str) -> pd.DataFrame:
     file = open(load_path)
     array = [[], [], []]
     for line in file.readlines():
-        sam_eval_struct = SamEvalStruct(line)
+        sam_eval_struct = SemEvalStruct(line)
 
         array[0].append(sam_eval_struct.caption)
         array[1].append(sam_eval_struct.index_set)
         array[2].append(sam_eval_struct)
 
-    sam_eval_dataframe = pd.DataFrame(np.array(array, dtype='object').transpose(),
+    sem_eval_dataframe = pd.DataFrame(np.array(array, dtype='object').transpose(),
                                       columns=["caption", "aspect_index", "sam_eval_aspect"])
-    return sam_eval_dataframe
+    return sem_eval_dataframe
