@@ -1,4 +1,4 @@
-# Aspect-Opinion Mining
+# Latent Aspect Mining
 
 
 The task is to create aspect-opinion co-occurrence sentiment heat map.
