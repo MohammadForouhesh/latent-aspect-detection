@@ -131,23 +131,3 @@ def segmentation(dataframe: pd.DataFrame, **kwargs) -> pd.DataFrame:
     columns.remove('Unnamed: 0') if 'Unnamed: 0' in columns else None
     series = dataframe['caption']
     return pd.DataFrame(pivot_segmentation(series, dataframe, columns, **kwargs), columns=columns)
-
-
-if __name__ == '__main__':
-    all_model = lda_mount('../models/pxp_model_flair_all_Canadian_Casinos.pxp')
-    #sentence = "I called today got no answer and the machines were full so hung up on. I called to make a complaint against a security guard who insulted my cousin calling him fat and to get out of line because he forgot his mask. I was wearing on so asked me to grab product for him then the security guard yelled stepped at me bouncing his chest at me an told me to get out of line as well to join my fat friend"
-    sentence = 'Had alot of fun nothing bad to say  Kind of an older crowd in the casino part which is nice'
-    #sentence = "Awesome saw Thunder from Down Under. Great show. Friendly Staff. Awesome Casino"
-    #base = preprocess(sentence, postag='all')
-    #prep_align = alignment(string_indexing(sentence), base)
-    #segmented = lda_entropy_segmentation(sentence, list(prep_align), model_1=all_model)
-    print(lda_kmeans_entropy_segmentation(sentence, model_1=all_model))
-    print(review_segmentation(sentence, model_1=all_model))
-    #assert isinstance(segmented, Generator)
-    #for item in segmented:
-    #    print('*****************************************')
-    #    print(item)
-    #input('?')
-    #sample = pd.read_excel('../data/Canadian_Casinos_preprocessed_corrected.xlsx')[:100]
-    #df = segmentation(sample, model_1=all_model)
-    #df.to_excel('../data/test_segmentation.xlsx', engine='openpyxl')

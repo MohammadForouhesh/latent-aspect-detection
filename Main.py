@@ -189,7 +189,7 @@ if __name__ == '__main__':
     os.makedirs("prep_and_seg_datasets", exist_ok=True)
     # ==================================================================================================================
     parser = argparse.ArgumentParser(description='Latent Aspect Detection.')
-    parser.add_argument('--path', dest='path', type=str, default='data/Canadian_Casinos.xlsx',
+    parser.add_argument('--path', dest='path', type=str, default='data/Canadian_Restaurant.xlsx',
                         help='Raw dataset file address.')
     parser.add_argument('--segment', dest='segment', type=bool, default=True, help='break every record into sentences.')
     parser.add_argument('--augment', dest='augment', type=int, default=None,
@@ -225,10 +225,10 @@ if __name__ == '__main__':
                         help="choose between 2014, 2015, 2016. to be tested by our model")
 
     parser.set_defaults(augment=None, segment=False, tune=False, preprocess=False, flair=False, correction=False,
-                        path='data/Canadian_Casinos_preprocessed_corrected.xlsx',
-                        aspect_model='models/pxp_model_flair_aspect_Canadian_Casinos_preprocessed_corrected.pxp',
-                        opinion_model='models/pxp_model_flair_opinion_Canadian_Casinos_preprocessed_corrected.pxp',
-                        all_model='models/pxp_model_flair_all_Canadian_Casinos_preprocessed_corrected.pxp')
+                        path='data/Canadian_Restaurant_preprocessed_corrected.xlsx',
+                        aspect_model='models/pxp_model_flair_aspect_Canadian_Restaurant_preprocessed_corrected.pxp',
+                        opinion_model='models/pxp_model_flair_opinion_Canadian_Restaurant_preprocessed_corrected.pxp',
+                        all_model='models/pxp_model_flair_all_Canadian_Restaurant_preprocessed_corrected.pxp')
 
     arguments = parser.parse_args()
     with warnings.catch_warnings():
