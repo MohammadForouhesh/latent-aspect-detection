@@ -1,12 +1,10 @@
 # Latent Aspect Mining
 
 
-The task is to create aspect-opinion co-occurrence sentiment heat map.
-The key idea is to extract noun and adjective/adverbs from the input document and then build two LDA models, one based
+The task is to create aspect-opinion-sentiment heat map for unsolicited user reviews on social platforms where most of aspects are not mentioned explicitly in reviews.
+The key idea is to extract noun and adjective/adverbs from the input reviews and then build two LDA models, one based
 only noun and the other based on adj/adv. Then by using LDA inference methods, calculate co-occurrence of noun topic and
 adj/adv topic for every document.
-The package is standalone, scalable, and can be freely extended to your needs.
-
 
 <br>
 
