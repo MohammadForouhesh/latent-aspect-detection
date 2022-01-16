@@ -1,9 +1,7 @@
 
 *.xml
 *.iml
-*.xlsx
 *.png
 *.pyc
 *.log
-*.pxp
 *.csv
