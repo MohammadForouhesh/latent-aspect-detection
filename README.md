@@ -1,10 +1,7 @@
 # Latent Aspect Mining
 
 
-The task is to create aspect-opinion-sentiment heat map for unsolicited user reviews on social platforms where most of aspects are not mentioned explicitly in reviews.
-The key idea is to extract noun and adjective/adverbs from the input reviews and then build two LDA models, one based
-only noun and the other based on adj/adv. Then by using LDA inference methods, calculate co-occurrence of noun topic and
-adj/adv topic for every document.
+The aspects of a product or service that customers review are those on which they express their opinions and views. It is crucial to a customer-centric business to recognize and prioritize customers' needs in order to maintain revenues and to reduce customer churn. Currently, supervised learning methods are usually trained on human-annotated data to detect surface forms of aspects. They fall short when aspects are <i>latent</i> in reviews. Yet, there is no explicit surface form representation for aspects in 35\% of reviews of electronics and restaurants. Using opinion expressions, we proposed an unsupervised method to extract latent aspects.
 
 <br>
 
