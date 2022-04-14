@@ -6,6 +6,33 @@ The aspects of a product or service that customers review are those on which the
 <br>
 
 
+### Dependencies
+
+* python        3.8.8
+* nltk          3.5
+* scikit-learn  0.24.1
+* spacy         3.0.5
+* gensim        3.8.3
+* textblob      0.15.3
+
+Also to make use of Spacy language model, run
+```bash
+$ conda install -c conda-forge spacy
+
+$ pip install spacy-transformers
+$ pip install spacy-lookups-data
+
+$ python -m spacy download en_core_web_trf
+```
+See also requirements.txt
+You can install requirements, using the following command.
+
+```bash
+$ pip install -r requirements.txt
+```
+
+<br>
+
 ### Data
 You can find the pre-processed datasets and the pre-trained models in the ```\data``` folder.
 Run the following command:
@@ -65,32 +92,6 @@ a model will be build from default settings.
 
 <br>
 
-### Dependencies
-
-* python        3.8.8
-* nltk          3.5
-* scikit-learn  0.24.1
-* spacy         3.0.5
-* gensim        3.8.3
-* textblob      0.15.3
-
-Also to make use of Spacy language model, run
-```bash
-$ conda install -c conda-forge spacy
-
-$ pip install spacy-transformers
-$ pip install spacy-lookups-data
-
-$ python -m spacy download en_core_web_trf
-```
-See also requirements.txt
-You can install requirements, using the following command.
-
-```bash
-$ pip install -r requirements.txt
-```
-
-<br>
 
 ### Costs
 
