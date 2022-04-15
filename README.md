@@ -1,4 +1,5 @@
 # Latent Aspect Mining
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/latent-aspect-detection-from-online/aspect-category-detection-on-semeval-2014-1)](https://paperswithcode.com/sota/aspect-category-detection-on-semeval-2014-1?p=latent-aspect-detection-from-online)
 
 Implantation of the paper [Latent Aspect Detection from Online Unsolicited Customer Reviews](https://arxiv.org/abs/2204.06964)
 
