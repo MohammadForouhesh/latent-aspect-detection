@@ -1,5 +1,6 @@
 # Latent Aspect Mining
 
+Implantation of the paper [Latent Aspect Detection from Online Unsolicited Customer Reviews](https://arxiv.org/abs/2204.06964)
 
 The aspects of a product or service that customers review are those on which they express their opinions and views. It is crucial to a customer-centric business to recognize and prioritize customers' needs in order to maintain revenues and to reduce customer churn. Currently, supervised learning methods are usually trained on human-annotated data to detect surface forms of aspects. They fall short when aspects are <i>latent</i> in reviews. Yet, there is no explicit surface form representation for aspects in 35\% of reviews of electronics and restaurants. Using opinion expressions, we proposed an unsupervised method to extract latent aspects.
 
@@ -101,3 +102,15 @@ a model will be build from default settings.
 * Pipline actual duration is ~11 hours on a dataset of size ~6800 
 
 <br>
+
+## Cite as
+```
+@misc{forouhesh2022latent,
+      title={Latent Aspect Detection from Online Unsolicited Customer Reviews}, 
+      author={Mohammad Forouhesh and Arash Mansouri and Hossein Fani},
+      year={2022},
+      eprint={2204.06964},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+```
