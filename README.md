@@ -107,7 +107,6 @@ a model will be build from default settings.
 ## Cite as
 ```
 @article{DBLP:journals/corr/abs-2204-06964,
-  publtype={informal},
   author={Mohammad Forouhesh and Arash Mansouri and Hossein Fani},
   title={Latent Aspect Detection from Online Unsolicited Customer Reviews},
   year={2022},
