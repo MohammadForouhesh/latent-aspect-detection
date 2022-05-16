@@ -106,14 +106,14 @@ a model will be build from default settings.
 
 ## Cite as
 ```
-@misc{https://doi.org/10.48550/arxiv.2204.06964,
-  doi = {10.48550/ARXIV.2204.06964},
-  url = {https://arxiv.org/abs/2204.06964},
-  author = {Forouhesh, Mohammad and Mansouri, Arash and Fani, Hossein},
-  keywords = {Computation and Language (cs.CL), Information Retrieval (cs.IR), Machine Learning (cs.LG), FOS: Computer and information sciences, FOS: Computer and information sciences, I.2.7; H.3.3},
-  title = {Latent Aspect Detection from Online Unsolicited Customer Reviews},
-  publisher = {arXiv},
-  year = {2022},
-  copyright = {Creative Commons Attribution Share Alike 4.0 International}
+@article{DBLP:journals/corr/abs-2204-06964,
+  publtype={informal},
+  author={Mohammad Forouhesh and Arash Mansouri and Hossein Fani},
+  title={Latent Aspect Detection from Online Unsolicited Customer Reviews},
+  year={2022},
+  cdate={1640995200000},
+  journal={CoRR},
+  volume={abs/2204.06964},
+  url={https://doi.org/10.48550/arXiv.2204.06964}
 }
 ```
